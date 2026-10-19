@@ -1,0 +1,39 @@
+name: Report a problem
+description: A SEM configuration, readings, or statistics problem
+body:
+  - type: input
+    id: home_assistant
+    attributes:
+      label: Home Assistant Core version
+      placeholder: 2026.10.1
+    validations:
+      required: true
+  - type: input
+    id: integration
+    attributes:
+      label: Integration version
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: Installation method
+      options:
+        - HACS
+        - Git
+        - Manual installation
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Expected and actual behavior
+      description: Describe the steps needed to reproduce the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and statistics verification report
+      description: Remove credentials, passwords, and contract numbers. Do not attach .storage files.
+      render: text

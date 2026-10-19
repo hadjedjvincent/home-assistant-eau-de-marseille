@@ -1,0 +1,67 @@
+name: Validate integration and library
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  verification:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        homeassistant: ['2026.3.0', '2026.9.0', '2026.10.2']
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.14'
+      - run: python -m pip install -r requirements-tools.txt homeassistant==${{ matrix.homeassistant }}
+      - run: ruff check . && ruff format --check .
+      - run: mypy --strict -p sem_water_client
+      - run: python -m coverage run -m pytest -q --junitxml=validation/pytest-report.xml
+      - run: python -m coverage report --include='*/config_flow.py' --fail-under=100
+      - run: python -m coverage json --include='*/config_flow.py' -o validation/config-flow-coverage.json
+      - run: python scripts/verify_recorder.py
+      - run: python -m build && twine check dist/*
+      - uses: actions/upload-artifact@v7.0.2
+        if: always()
+        with:
+          name: verification-ha-${{ matrix.homeassistant }}
+          path: |
+            validation/
+            dist/
+            /tmp/sem-recorder-validation-*/report.json
+            /tmp/sem-recorder-validation-*/home-assistant_v2.db
+            /tmp/sem-recorder-validation-*/.storage/
+          include-hidden-files: true
+  client-compatibility:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install . pytest==9.1.1 pytest-asyncio==1.4.0
+      - run: python -m pytest tests/client -q
+  hassfest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: home-assistant/actions/hassfest@master
+  hacs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: hacs/action@main
+        env:
+          REPOSITORY_REF: ${{ github.head_ref || github.ref_name }}
+        with:
+          category: integration
+          comment: false

@@ -1,0 +1,23 @@
+import_history:
+  fields:
+    days:
+      default: 730
+      selector:
+        number:
+          min: 1
+          max: 730
+          mode: box
+    contract_id:
+      selector:
+        number:
+          min: 1
+          mode: box
+
+verify_statistics:
+  fields:
+    contract_id:
+      required: true
+      selector:
+        number:
+          min: 1
+          mode: box

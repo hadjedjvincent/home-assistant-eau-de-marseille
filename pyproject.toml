@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sem-water-client"
+version = "0.1.0"
+description = "Asynchronous client for the Eau de Marseille Métropole customer portal"
+readme = "custom_components/sem/sem_water_client/README.md"
+requires-python = ">=3.12"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{name = "Vincent Hadjedj"}]
+dependencies = ["aiohttp>=3.9,<4"]
+classifiers = ["Programming Language :: Python :: 3", "Typing :: Typed"]
+
+[project.urls]
+Source = "https://github.com/hadjedjvincent/home-assistant-eau-de-marseille"
+Issues = "https://github.com/hadjedjvincent/home-assistant-eau-de-marseille/issues"
+
+[tool.setuptools]
+packages = ["sem_water_client"]
+
+[tool.setuptools.package-dir]
+sem_water_client = "custom_components/sem/sem_water_client"
+
+[tool.setuptools.package-data]
+sem_water_client = ["py.typed"]
+
+[tool.ruff]
+target-version = "py314"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests/client", "tests/components/sem"]
+addopts = "--import-mode=importlib --confcutdir=tests"
+
+[tool.coverage.run]
+branch = true
+include = ["*/config_flow.py", "*/sem_water_client/*.py"]
+
+[tool.coverage.report]
+show_missing = true
+
+[tool.ruff.lint.isort]
+force-sort-within-sections = true
+known-first-party = ["homeassistant"]
+combine-as-imports = true
+split-on-trailing-comma = false
+
+[tool.ruff.per-file-target-version]
+"custom_components/sem/sem_water_client/*.py" = "py312"
+
+[tool.mypy]
+mypy_path = "custom_components/sem"

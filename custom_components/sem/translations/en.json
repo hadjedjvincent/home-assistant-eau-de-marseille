@@ -1,0 +1,85 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Eau de Marseille Métropole",
+        "description": "Enter your customer portal credentials. Leave the contract number empty to select a contract from your account.",
+        "data": {
+          "username": "Email",
+          "password": "Password",
+          "contract_id": "Contract number",
+          "import_history": "Import up to two years of readings"
+        }
+      },
+      "choose_contract": {
+        "title": "Choose a water contract",
+        "data": {
+          "contract": "Contract"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Update SEM credentials",
+        "description": "Use an account that can access the existing water contract.",
+        "data": {
+          "username": "Email",
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Unable to connect to the SEM portal. Try again later.",
+      "invalid_auth": "The portal rejected your credentials.",
+      "unknown": "An unexpected error occurred. Check the Home Assistant logs.",
+      "contract_not_found": "This contract is not available in this account."
+    },
+    "abort": {
+      "already_configured": "This water contract is already configured.",
+      "no_contracts_found": "No water contracts were found in this account.",
+      "reauth_successful": "Credentials updated successfully."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "water_index": {
+        "name": "Water meter index"
+      }
+    }
+  },
+  "services": {
+    "import_history": {
+      "name": "Import water readings",
+      "description": "Refresh dated SEM readings without removing previously recorded history.",
+      "fields": {
+        "contract_id": {
+          "name": "Contract",
+          "description": "Leave empty to refresh all loaded SEM contracts."
+        },
+        "days": {
+          "name": "Days",
+          "description": "Number of days to request from the portal (1 to 730)."
+        }
+      }
+    },
+    "verify_statistics": {
+      "name": "Check water statistics",
+      "description": "Compare Recorder with the permanent journal without changing any data.",
+      "fields": {
+        "contract_id": {
+          "name": "Contract",
+          "description": "SEM contract number to check."
+        }
+      }
+    }
+  },
+  "exceptions": {
+    "no_matching_contract": {
+      "message": "No matching SEM contract is configured."
+    },
+    "entry_not_loaded": {
+      "message": "The SEM integration must be loaded before importing readings."
+    },
+    "invalid_auth": {
+      "message": "The SEM portal credentials are invalid."
+    }
+  }
+}

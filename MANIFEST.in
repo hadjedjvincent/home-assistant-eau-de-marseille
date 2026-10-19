@@ -1,0 +1,8 @@
+include LICENSE
+include custom_components/sem/sem_water_client/README.md
+recursive-include custom_components/sem/sem_water_client *.py py.typed
+prune tests
+prune scripts
+prune docs
+prune validation
+prune custom_components/sem/brand

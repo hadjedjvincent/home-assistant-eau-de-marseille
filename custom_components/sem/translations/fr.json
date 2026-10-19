@@ -1,0 +1,85 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connexion à Eau de Marseille Métropole",
+        "description": "Saisis les identifiants de ton espace client. Laisse le numéro de contrat vide pour choisir parmi les contrats du compte.",
+        "data": {
+          "username": "Adresse e-mail",
+          "password": "Mot de passe",
+          "contract_id": "Numéro de contrat",
+          "import_history": "Importer jusqu’à deux ans de relevés"
+        }
+      },
+      "choose_contract": {
+        "title": "Choisir un contrat d’eau",
+        "data": {
+          "contract": "Contrat"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Actualiser les identifiants SEM",
+        "description": "Utilise un compte qui donne accès au contrat d’eau existant.",
+        "data": {
+          "username": "Adresse e-mail",
+          "password": "Mot de passe"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Impossible de joindre le portail SEM. Réessaie plus tard.",
+      "invalid_auth": "Le portail a refusé les identifiants.",
+      "unknown": "Une erreur inattendue est survenue. Consulte les journaux Home Assistant.",
+      "contract_not_found": "Ce contrat n’est pas disponible sur ce compte."
+    },
+    "abort": {
+      "already_configured": "Ce contrat d’eau est déjà configuré.",
+      "no_contracts_found": "Aucun contrat d’eau trouvé sur ce compte.",
+      "reauth_successful": "Identifiants mis à jour."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "water_index": {
+        "name": "Index du compteur d’eau"
+      }
+    }
+  },
+  "services": {
+    "import_history": {
+      "name": "Importer les relevés d’eau",
+      "description": "Actualise les relevés SEM datés sans effacer l’historique enregistré.",
+      "fields": {
+        "contract_id": {
+          "name": "Contrat",
+          "description": "Laisse vide pour actualiser tous les contrats SEM chargés."
+        },
+        "days": {
+          "name": "Jours",
+          "description": "Nombre de jours à demander au portail (1 à 730)."
+        }
+      }
+    },
+    "verify_statistics": {
+      "name": "Vérifier les statistiques d’eau",
+      "description": "Compare Recorder au journal permanent sans modifier les données.",
+      "fields": {
+        "contract_id": {
+          "name": "Contrat",
+          "description": "Numéro du contrat SEM à vérifier."
+        }
+      }
+    }
+  },
+  "exceptions": {
+    "no_matching_contract": {
+      "message": "Aucun contrat SEM configuré ne correspond."
+    },
+    "entry_not_loaded": {
+      "message": "L’intégration SEM doit être chargée avant l’import."
+    },
+    "invalid_auth": {
+      "message": "Les identifiants du portail SEM sont invalides."
+    }
+  }
+}

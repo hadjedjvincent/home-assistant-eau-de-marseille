@@ -1,0 +1,20 @@
+{
+  "domain": "sem",
+  "name": "Eau de Marseille Métropole",
+  "codeowners": [
+    "@hadjedjvincent"
+  ],
+  "config_flow": true,
+  "dependencies": [
+    "recorder"
+  ],
+  "documentation": "https://github.com/hadjedjvincent/home-assistant-eau-de-marseille",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/hadjedjvincent/home-assistant-eau-de-marseille/issues",
+  "loggers": [
+    "sem_water_client"
+  ],
+  "requirements": [],
+  "version": "1.0.0"
+}
